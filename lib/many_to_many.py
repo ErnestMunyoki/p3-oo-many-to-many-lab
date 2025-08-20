@@ -17,6 +17,14 @@ class Book:
             raise Exception("Title must be a string")
         self._title = value
 
+    def contracts(self):
+        """Return all contracts linked to this book"""
+        return [contract for contract in Contract.all if contract.book is self]
+
+    def authors(self):
+        """Return all authors linked to this book via contracts"""
+        return [contract.author for contract in self.contracts()]
+
 
 class Author:
     all = []
@@ -56,7 +64,6 @@ class Contract:
     all = []
 
     def __init__(self, author, book, date, royalties):
-        # type checks
         if not isinstance(author, Author):
             raise Exception("Author must be an Author instance")
         if not isinstance(book, Book):
